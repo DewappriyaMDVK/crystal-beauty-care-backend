@@ -17,7 +17,7 @@ mongoose.connect(mongoUrl,{}).then(() => {
     console.log("Database connection is failed",err);
     
 });
-const connection = mongoose.connection;
+const connection = mongoose.connection;   
 connection.once("open",()=>{
     console.log("Database is connected")
 })
@@ -31,9 +31,7 @@ app.use("/api/product",productRouter)
 app.use("/api/oder",oderRouter)
 
 
-
-
-app.get("/", (req,res)=>{
+app.get("/", (req,res)=>{    
 
     console.log(req.body);
     console.log("A get request is recived");
