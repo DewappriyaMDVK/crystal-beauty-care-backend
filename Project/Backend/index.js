@@ -2,16 +2,15 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import userRouter from './Routers/userRouter.js';
-import jwt, { decode } from 'jsonwebtoken';
 import productRouter from './Routers/productRouter.js';
 import oderRouter from './Routers/oderRouter.js';
 import verifyJwt from './middleWare/auth.js';
+import dotenv from 'dotenv'
 
+dotenv.config()
 let app = express();
 
-const mongoUrl = "mongodb+srv://admin:1998@cluster0.nticg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-
-mongoose.connect(mongoUrl,{}).then(() => {
+mongoose.connect(process.env.mongoUrl,{}).then(() => {
     console.log("Database connection is working")
 }).catch((err) => {
     console.log("Database connection is failed",err);
