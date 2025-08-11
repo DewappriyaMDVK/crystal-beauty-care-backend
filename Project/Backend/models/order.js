@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-const oderSchema = mongoose.Schema({
-    oderId: {
+const orderSchema = mongoose.Schema({
+    orderId: {
         type: String,
         unique: true,
         required: true
@@ -50,5 +50,5 @@ const oderSchema = mongoose.Schema({
     }
 });
 
-const Oder = new mongoose .model("oders",oderSchema);
-export default Oder;
+const Order = new mongoose .model("orders",orderSchema);
+export default Order;

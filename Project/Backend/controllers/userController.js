@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import dotenv from 'dotenv';
+dotenv.config()
 
 export function saveUser(req,res){
     const hashedPassword = bcrypt.hashSync(req.body.password , 10)
@@ -9,16 +11,17 @@ export function saveUser(req,res){
         firstName : req.body.firstName,
         lastName : req.body.lastName,
         role : req.body.role,
+        phone : req.body.phone,
         password : hashedPassword
     })
 
     user.save().then(()=>{
         res.json({
-            massege : "User is Saved."
+            massage : "User is Saved."
         })
     }).catch((error)=>{
         res.json({
-            massege : "User is not saved.",error
+            massage : "User is not saved.",error
         })
     })
 }
@@ -32,7 +35,7 @@ export function userLogin(req,res){
     }).then((user)=>{
         if(user==null){
             res.json({
-                massege : "Invalide UserName"
+                massage : "Invalide UserName"
             })
         }else{
             const isPasswordCorrect = bcrypt.compareSync(password,user.password)// In here password value is boolean
@@ -47,19 +50,18 @@ export function userLogin(req,res){
                     isDisable : user.isDisable,
                     IsEmailVeryfide : user.IsEmailVeryfide
                 }
-                const token = jwt.sign(userData,"random456")
-                console.log("User controller")
-                console.log("[")
+                const token = jwt.sign(userData,process.env.JWT_key)
+               
                 console.log(token)
-                console.log("]")
 
                 res.json({
-                    massege : "User Login successful",
-                    token : token
+                    massage : "User Login successful",
+                    token : token,
+                    user : userData
                 })
             }else{
                 res.json({
-                    massege : "Wrong Password"
+                    massage : "Wrong Password"
                 })
             }
         }

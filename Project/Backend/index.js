@@ -3,22 +3,24 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import userRouter from './Routers/userRouter.js';
 import productRouter from './Routers/productRouter.js';
-import oderRouter from './Routers/oderRouter.js';
+import orderRouter from './Routers/orderRouter.js';
 import verifyJwt from './middleWare/auth.js';
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
+import cors from 'cors';
 
 dotenv.config()
 let app = express();
+app.use(cors())
 
 mongoose.connect(process.env.mongoUrl,{}).then(() => {
-    console.log("Database connection is working")
+    console.log("Database connected")
 }).catch((err) => {
     console.log("Database connection is failed",err);
     
 });
 const connection = mongoose.connection;   
 connection.once("open",()=>{
-    console.log("Database is connected")
+    console.log("Database connection is working")
 })
 
 app.use(bodyParser.json());
@@ -27,30 +29,8 @@ app.use(verifyJwt)
 
 app.use("/api/user",userRouter)
 app.use("/api/product",productRouter)
-app.use("/api/oder",oderRouter)
+app.use("/api/order",orderRouter)
 
-
-app.get("/", (req,res)=>{    
-
-    console.log(req.body);
-    console.log("A get request is recived");
-    res.json({"massage":"Hello world"});
-});
-app.post("/", (req,res)=>{
-    const newProduct = new Product(req.body);
-    newProduct.save().then(()=>{
-    res.json({
-        message:"The Product is Saved"})
-    }).catch((error)=>{
-        res.json({message:"The product couldn't be Saved",error})
-    })
-    console.log("a post request is recived")});
-app.delete("/", ()=>{console.log("a delete request is recived")});
-
-app.put("/", ()=>{console.log("This is a put request!")});
-
-
-
-app.listen(3000, ()=>{
-    console.log("Server is running on port 3000");
+app.listen(5000, ()=>{
+    console.log("Server is running on port 5000");
 });
